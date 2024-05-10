@@ -4,7 +4,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 
-namespace UHMPOC
+namespace ToolQAPOC
 {
     [TestFixture]
     public class CheckBoxTests

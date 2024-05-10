@@ -7,7 +7,7 @@ using System;
 namespace ToolQAPOC
 {
     [TestFixture]
-    public class DemoQATextBoxTestCases
+    public class TextBoxTests
     {
         private IWebDriver driver;
 
