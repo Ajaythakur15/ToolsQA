@@ -11,7 +11,7 @@ using System.Threading;
 using System.Xml.Linq;
 using static System.Net.WebRequestMethods;
 
-namespace DemoQATests
+namespace ToolQAPOC
 {
     [TestFixture]
     public class RadioButtonTests
