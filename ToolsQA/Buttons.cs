@@ -20,27 +20,40 @@ namespace ToolsQA
                 driver = new ChromeDriver();
                 driver.Manage().Window.Maximize();
                 driver.Navigate().GoToUrl("https://demoqa.com/buttons");
-                ScrollPage(600);
+                ScrollPage(400);
             }
 
-            [Test]
-            public void TestButtonClick()
+        [Test]
+        public void TestButtonClick()
+        {
+            ClickButtonAndVerifyAlert("Click Me", "You clicked a button", TimeSpan.FromSeconds(30));
+        }
+
+        private void ClickButtonAndVerifyAlert(string buttonText, string expectedAlertText, TimeSpan timeout)
+        {
+            IWebElement button = driver.FindElement(By.XPath($"//button[text()='{buttonText}']"));
+
+            if (button != null)
             {
-                // Find and click the "Click Me" button
-                IWebElement clickMeButton = driver.FindElement(By.XPath("//button[text()='Click Me']"));
-                clickMeButton.Click();
+                Actions actions = new Actions(driver);
+                actions.MoveToElement(button).Click().Build().Perform();
 
-                // Verify that the button click generates an alert
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+                WebDriverWait wait = new WebDriverWait(driver, timeout);
                 IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
-                Assert.IsNotNull(alert);
-                Assert.AreEqual("You clicked a button", alert.Text);
 
-                // Close the alert
+                Assert.IsNotNull(alert);
+                Assert.AreEqual(expectedAlertText, alert.Text);
+
                 alert.Accept();
             }
+            else
+            {
+                Assert.Fail($"Button with text '{buttonText}' not found.");
+            }
+        }
 
-            [Test]
+
+        [Test]
             public void TestDoubleClick()
             {
                 // Find and double click the "Double Click Me" button
