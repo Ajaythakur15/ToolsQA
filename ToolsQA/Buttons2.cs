@@ -68,6 +68,8 @@ namespace ToolsQA
             js.ExecuteScript($"window.scrollBy(0,{yOffset});");
         }
 
+        
+
         [TearDown]
         public void CloseBrowser()
         {
