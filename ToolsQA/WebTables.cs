@@ -1,11 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ToolQAPOC
 {
@@ -14,60 +12,114 @@ namespace ToolQAPOC
     {
         private IWebDriver driver;
 
-        ////SetUp Method
-        //1: This method is executed before each test case.
-        //2: It initializes the ChromeDriver, maximizes the window, navigates to the specified URL(https://demoqa.com/webtables), and scrolls the page down by 600 pixels.
         [SetUp]
         public void Setup()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl("https://demoqa.com/webtables");
-            ScrollPage(600);
+            ScrollPage(500);
         }
+
         [Test]
-        public void VerifyTableHeaders()
+        public void ClickAddButton()
         {
-            // Verify the headers of the web table
-            string[] expectedHeaders = { "First Name", "Last Name", "Age", "Email", "Salary", "Department" };
-            IWebElement table = driver.FindElement(By.ClassName("tsc_table_s13"));
-            IWebElement headerRow = table.FindElement(By.TagName("thead")).FindElement(By.TagName("tr"));
-            IList<IWebElement> headerCells = headerRow.FindElements(By.TagName("th"));
+            ClickElement(By.XPath("//button[contains(text(),'Add')]"));
+            Assert.IsTrue(IsElementDisplayed(By.XPath("//button[contains(text(),'Add')]")), "Add button should be clicked");
+        }
 
-            Assert.AreEqual(expectedHeaders.Length, headerCells.Count);
+        [Test]
+        public void TestTextBoxValues()
+        {
+            ClickAddButton();
+            EnterValuesIntoTextbox("firstName", "Prachi");
+            EnterValuesIntoTextbox("lastName", "Sharma");
+            EnterValuesIntoTextbox("userEmail", "prachi@gmail.com");
+            EnterValuesIntoTextbox("age", "22");
+            EnterValuesIntoTextbox("salary", "2200");
+            EnterValuesIntoTextbox("department", "MCA");
+            ClickElement(By.CssSelector("#submit"));
+            Assert.IsTrue(SubmitButtonDisplayed(), "Submit button is not displayed");
 
-            for (int i = 0; i < expectedHeaders.Length; i++)
+            Assert.AreEqual("Prachi", GetTextBoxValue("firstName"), "Firstname value does not match");
+            Assert.AreEqual("Sharma", GetTextBoxValue("lastName"), "Lastname value does not match");
+            Assert.AreEqual("prachi@gmail.com", GetTextBoxValue("userEmail"), "UserEmail value does not match");
+            Assert.AreEqual("22", GetTextBoxValue("age"), "Age value does not match");
+            Assert.AreEqual("2200", GetTextBoxValue("salary"), "Salary value does not match");
+            Assert.AreEqual("MCA", GetTextBoxValue("department"), "Department value does not match");
+        }
+
+        [Test]
+        public void SearchBox()
+        {
+            EnterValuesIntoTextbox("searchBox", "Al");
+            ClickElement(By.XPath("//span[@id='basic-addon2']"));
+            Assert.IsTrue(IsElementDisplayed(By.XPath("//span[@id='basic-addon2']")), "Search is not happening");
+        }
+
+        [Test]
+        public void DeleteButton()
+        {
+            ClickElement(By.XPath("//span[@id='delete-record-2']"));
+            Assert.IsTrue(IsElementDisplayed(By.XPath("//span[@id='delete-record-1']")), "Button should delete");
+        }
+
+        [Test]
+        public void EditButton()
+        {
+            ClickElement(By.XPath("//span[@id='edit-record-1']"));
+            Assert.IsTrue(IsElementDisplayed(By.XPath("//span[@id='edit-record-1']")), "Button should edit the records");
+
+            EnterValuesIntoTextbox("age", "44");
+            EnterValuesIntoTextbox("department", "BCA");
+            ClickElement(By.XPath("//button[@type='submit']"));
+            Assert.IsTrue(SubmitButtonDisplayed(), "Submit is not done");
+
+            Assert.AreEqual("44", GetTextBoxValue("age"), "Age value does not match");
+            Assert.AreEqual("BCA", GetTextBoxValue("department"), "Department value does not match");
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            driver.Quit();
+        }
+
+        public void ClickElement(By locator)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(ExpectedConditions.ElementToBeClickable(locator)).Click();
+        }
+
+        public bool IsElementDisplayed(By locator)
+        {
+            try
             {
-                Assert.AreEqual(expectedHeaders[i], headerCells[i].Text.Trim());
+                return driver.FindElement(locator).Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
             }
         }
 
-        [Test]
-        public void VerifyTableRowCount()
+        public void EnterValuesIntoTextbox(string id, string text)
         {
-            // Verify the total number of rows in the web table
-            int expectedRowCount = 5; // Assuming there are 5 rows in the table
-            IWebElement tableBody = driver.FindElement(By.ClassName("tsc_table_s13")).FindElement(By.TagName("tbody"));
-            IList<IWebElement> rows = tableBody.FindElements(By.TagName("tr"));
-
-            Assert.AreEqual(expectedRowCount, rows.Count);
+            IWebElement element = driver.FindElement(By.Id(id));
+            element.Clear();
+            element.SendKeys(text);
         }
 
-        [Test]
-        public void VerifyTableCellValue()
+        private string GetTextBoxValue(string id)
         {
-            // Verify the value of a specific cell in the web table
-            string expectedValue = "John";
-            IWebElement tableBody = driver.FindElement(By.ClassName("tsc_table_s13")).FindElement(By.TagName("tbody"));
-            IWebElement cell = tableBody.FindElement(By.XPath("//td[contains(text(), 'John')]"));
-
-            Assert.AreEqual(expectedValue, cell.Text.Trim());
+            return driver.FindElement(By.Id(id)).GetAttribute("value");
         }
-        //Helper Methods(WaitForElementClickable, WaitForElementDisplayed, ScrollPage):
-        //1: These methods are used for common tasks like waiting for elements to be clickable or displayed, and scrolling the page.
-        //2: WaitForElementClickable waits for an element to be clickable within a specified timeout.
-        //3: WaitForElementDisplayed waits for an element to be displayed within a specified timeout.
-        //4: ScrollPage scrolls the page by a specified yOffset.
+
+        public bool SubmitButtonDisplayed()
+        {
+            return driver.FindElement(By.XPath("//button[@id='submit']")).Displayed;
+        }
+
         private IWebElement WaitForElementClickable(By locator, int timeoutInSeconds = 10)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds));
@@ -86,16 +138,11 @@ namespace ToolQAPOC
                 return false;
             }
         }
+
         private void ScrollPage(int yOffset)
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript($"window.scrollBy(0, {yOffset});");
         }
-        [TearDown]
-        public void Cleanup()
-        {
-            driver.Quit();
-        }
     }
 }
-
