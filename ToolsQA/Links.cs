@@ -29,19 +29,17 @@ namespace ToolsQA
         {
             LinksPath linksPath = new LinksPath(driver);
             linksPath.ClickHome();
-            /*ScrollPage(400);
-            linksPath.BackToLinkPage();
-            ScrollPage(400);
-            IWebElement element = driver.FindElement(By.XPath("//span[contains(text(),'Links')"));
-            element.Click();*/
+            Assert.IsTrue(linksPath.IsClickHome(), "Home Link should be clicked");
 
 
 
         }
+        [Test]
         public void ClickNextHome()
         {
             LinksPath linksPath = new LinksPath(driver);
             linksPath.ClickNextHome();
+            Assert.IsTrue(linksPath.IsClickNextHome(), "Home Link should be clicked");
         }
             
 
@@ -68,12 +66,21 @@ namespace ToolsQA
         {
             ClickElememnt(By.XPath("//a[@id='simpleLink']"));
         }
-       
+        public bool IsClickHome()
+        {
+            return driver.FindElement(By.XPath("//a[@id='simpleLink']")).Displayed;
+        }
+
+
         public void ClickNextHome()
         {
             ClickElememnt(By.XPath("//a[@id='dynamicLink']"));
         }
-       
+
+        public bool IsClickNextHome()
+        {
+            return driver.FindElement(By.XPath("//a[@id='dynamicLink']")).Displayed;
+        }
         public void ClickElememnt(By locators)
         {
             driver.FindElement(locators).Click();
