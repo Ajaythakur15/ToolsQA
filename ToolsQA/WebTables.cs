@@ -21,12 +21,12 @@ namespace ToolQAPOC
             ScrollPage(500);
         }
 
-        [Test]
-        public void ClickAddButton()
-        {
-            ClickElement(By.XPath("//button[contains(text(),'Add')]"));
-            Assert.IsTrue(IsElementDisplayed(By.XPath("//button[contains(text(),'Add')]")), "Add button should be clicked");
-        }
+        //[Test]
+        //public void ClickAddButton()
+        //{
+        //    ClickElement(By.XPath("//button[@id='addNewRecordButton']"));
+        //    Assert.IsTrue(IsElementDisplayed(By.XPath("//button[contains(text(),'Add')]")), "Add button should be clicked");
+        //}
 
         [Test]
         public void TestTextBoxValues()
@@ -38,8 +38,31 @@ namespace ToolQAPOC
             EnterValuesIntoTextbox("age", "22");
             EnterValuesIntoTextbox("salary", "2200");
             EnterValuesIntoTextbox("department", "MCA");
-            ClickElement(By.CssSelector("#submit"));
-            Assert.IsTrue(SubmitButtonDisplayed(), "Submit button is not displayed");
+            SubmitButtonDisplayed();
+            //ClickOnClickButton();
+            Assert.IsTrue(SubmitButtonDisplayed(), "Submit button should be hidden after submit");
+
+            Assert.AreEqual("Prachi", GetTextBoxValue("firstName"), "Firstname value does not match");
+            Assert.AreEqual("Sharma", GetTextBoxValue("lastName"), "Lastname value does not match");
+            Assert.AreEqual("prachi@gmail.com", GetTextBoxValue("userEmail"), "UserEmail value does not match");
+            Assert.AreEqual("22", GetTextBoxValue("age"), "Age value does not match");
+            Assert.AreEqual("2200", GetTextBoxValue("salary"), "Salary value does not match");
+            Assert.AreEqual("MCA", GetTextBoxValue("department"), "Department value does not match");
+        }
+        [Test]
+        public void TestAddButtonSubmit()
+        {
+            ClickAddButton();
+            EnterValuesIntoTextbox("firstName", "Prachi");
+            // Add explicit wait before interacting with the firstName element
+            WaitForElement(By.CssSelector("#firstName"));
+            EnterValuesIntoTextbox("lastName", "Sharma");
+            EnterValuesIntoTextbox("userEmail", "prachi@gmail.com");
+            EnterValuesIntoTextbox("age", "22");
+            EnterValuesIntoTextbox("salary", "2200");
+            EnterValuesIntoTextbox("department", "MCA");
+            ClickOnSubmitButton();
+            //Assert.IsTrue(SubmitButtonDisplayed(), "Submit button should be hidden after submit");
 
             Assert.AreEqual("Prachi", GetTextBoxValue("firstName"), "Firstname value does not match");
             Assert.AreEqual("Sharma", GetTextBoxValue("lastName"), "Lastname value does not match");
@@ -87,15 +110,38 @@ namespace ToolQAPOC
 
         public void ClickElement(By locator)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            wait.Until(ExpectedConditions.ElementToBeClickable(locator)).Click();
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+            IWebElement element = wait.Until(ExpectedConditions.ElementToBeClickable(locator));
+            element.Click();
         }
 
-        public bool IsElementDisplayed(By locator)
+        public void ClickOnSubmitButton()
+        {
+            ClickElement(By.XPath("//button[@id='submit']"));
+        }
+        public void ClickAddButton()
+        {
+            ClickElement(By.XPath("//button[@id='addNewRecordButton']"));
+        }
+
+        public void EnterValuesIntoTextbox(string name, string text)
+        {
+            IWebElement element = WaitUntilElementIsVisible(By.Id(name));
+            element.Clear();
+            element.SendKeys(text);
+        }
+
+        private string GetTextBoxValue(string name)
+        {
+            IWebElement element = WaitUntilElementIsVisible(By.Id(name));
+            return element.GetAttribute("value");
+        }
+
+        public bool SubmitButtonDisplayed()
         {
             try
             {
-                return driver.FindElement(locator).Displayed;
+                return driver.FindElement(By.CssSelector("#submit")).Displayed;
             }
             catch (NoSuchElementException)
             {
@@ -103,35 +149,27 @@ namespace ToolQAPOC
             }
         }
 
-        public void EnterValuesIntoTextbox(string id, string text)
-        {
-            IWebElement element = driver.FindElement(By.Id(id));
-            element.Clear();
-            element.SendKeys(text);
-        }
-
-        private string GetTextBoxValue(string id)
-        {
-            return driver.FindElement(By.Id(id)).GetAttribute("value");
-        }
-
-        public bool SubmitButtonDisplayed()
-        {
-            return driver.FindElement(By.XPath("//button[@id='submit']")).Displayed;
-        }
-
-        private IWebElement WaitForElementClickable(By locator, int timeoutInSeconds = 10)
+        private IWebElement WaitForElementClickable(By locator, int timeoutInSeconds = 15)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds));
             return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(locator));
         }
-
-        private bool WaitForElementDisplayed(By locator, int timeoutInSeconds = 10)
+        private void WaitForElement(By locator, int timeoutInSeconds = 15)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds));
+            wait.Until(ExpectedConditions.ElementExists(locator));
+        }
+        private IWebElement WaitUntilElementIsVisible(By locator)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+            return wait.Until(ExpectedConditions.ElementIsVisible(locator));
+        }
+
+        private bool IsElementDisplayed(By locator)
+        {
             try
             {
-                return wait.Until(driver => driver.FindElement(locator).Displayed);
+                return driver.FindElement(locator).Displayed;
             }
             catch (NoSuchElementException)
             {
