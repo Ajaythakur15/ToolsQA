@@ -55,7 +55,7 @@ namespace ToolQAPOC
             ClickAddButton();
             EnterValuesIntoTextbox("firstName", "Prachi");
             // Add explicit wait before interacting with the firstName element
-            WaitForElement(By.CssSelector("#firstName"));
+            //WaitForElement(By.CssSelector("#firstName"));
             EnterValuesIntoTextbox("lastName", "Sharma");
             EnterValuesIntoTextbox("userEmail", "prachi@gmail.com");
             EnterValuesIntoTextbox("age", "22");
