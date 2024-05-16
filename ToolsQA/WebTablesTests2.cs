@@ -121,7 +121,7 @@ namespace ToolsQA
         {
             driver.FindElement(addNewRecordButton).Click();
 
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Until(ExpectedConditions.ElementIsVisible(inputFields));
 
             var inputs = driver.FindElements(inputFields);
@@ -142,7 +142,7 @@ namespace ToolsQA
                 throw new NoSuchElementException("Expected number of input fields not found");
             }
         }
-
+        //data source
         public class TableRowData
         {
             public string FirstName { get; set; }
