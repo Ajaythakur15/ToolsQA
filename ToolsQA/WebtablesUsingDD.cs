@@ -140,12 +140,34 @@ namespace ToolsQA
             return headers.Select(header => header.Text).ToList();
         }
 
-        public TableRowData RowDataValue()
+        /*        public TableRowData RowDataValue()
+                {
+                    var cells = driver.FindElements(By.CssSelector("div.rt-td"));
+                    if(cells.Count >= 6)
+                    {
+                        return new TableRowData
+                        {
+                            FirstName = cells[0].Text,
+                            LastName = cells[1].Text,
+                            Age = cells[2].Text,
+                            Email = cells[3].Text,
+                            Salary = cells[4].Text,
+                            Department = cells[5].Text
+                        };
+                    }
+                    else
+                    {
+                        return new TableRowData();
+                    }
+
+                }
+        */
+        public InputValues RowDataValue()
         {
             var cells = driver.FindElements(By.CssSelector("div.rt-td"));
-            if(cells.Count >= 6)
+            if (cells.Count >= 6)
             {
-                return new TableRowData
+                return new InputValues
                 {
                     FirstName = cells[0].Text,
                     LastName = cells[1].Text,
@@ -157,11 +179,11 @@ namespace ToolsQA
             }
             else
             {
-                return new TableRowData();
+                return new InputValues();
             }
-           
+
         }
 
-       
+
     }
 }
