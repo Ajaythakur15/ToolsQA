@@ -19,7 +19,7 @@ namespace ToolsQA
             driver.Manage().Window.Maximize();
             //ScrollPage(500);
 
-            var rows = driver.FindElements(By.CssSelector("div.rt-td"));
+            var rows = driver.FindElements(By.CssSelector("div.rt-tbody div.rt-tr-group"));
                 /*string FirstName = cells[0].Text;
                 string LastName = cells[1].Text;
                 string Age = cells[2].Text;
@@ -31,7 +31,7 @@ namespace ToolsQA
 
             using (ExcelPackage package = new ExcelPackage(new FileInfo("Data.xlsx")))
             {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets["sheet2"];
+                ExcelWorksheet worksheet = package.Workbook.Worksheets["Sheet2"];
                 int rowNumber = 2;    // Start from the second row in Excel
                 foreach (var row in rows)
                 {
