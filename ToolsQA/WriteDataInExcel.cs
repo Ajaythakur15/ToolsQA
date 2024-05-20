@@ -9,29 +9,39 @@ using System.Threading.Tasks;
 
 namespace ToolsQA
 {
+    [TestFixture]
     public class WriteDataInExcel
     {
+        private IWebDriver driver;
+        [SetUp]
+        public void Setup()
+        {
+            driver = new ChromeDriver();
+            driver.Manage().Window.Maximize();
+            driver.Navigate().GoToUrl("https://demoqa.com/webtables");
+            ScrollPage(500);
+
+            // Set the license context for EPPlus
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        }
+
         [Test]
         public void AddDataFromWebpageToExcel()
         {
-            IWebDriver driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("https://demoqa.com/webtables");
-            driver.Manage().Window.Maximize();
-            //ScrollPage(500);
-
             var rows = driver.FindElements(By.CssSelector("div.rt-tbody div.rt-tr-group"));
-                /*string FirstName = cells[0].Text;
-                string LastName = cells[1].Text;
-                string Age = cells[2].Text;
-                string Email = cells[3].Text;
-                string Salary = cells[4].Text;
-                string department = cells[5].Text;*/
-
-
+            string filePath = "Data.xlsx";
+            FileInfo file = new FileInfo(filePath);
 
             using (ExcelPackage package = new ExcelPackage(new FileInfo("Data.xlsx")))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets["Sheet2"];
+                worksheet.Cells[1, 1].Value = "First Name";
+                worksheet.Cells[1, 2].Value = "Last Name";
+                worksheet.Cells[1, 3].Value = "Age";
+                worksheet.Cells[1, 4].Value = "Email";
+                worksheet.Cells[1, 5].Value = "Salary";
+                worksheet.Cells[1, 6].Value = "Department";
+
                 int rowNumber = 2;    // Start from the second row in Excel
                 foreach (var row in rows)
                 {
@@ -50,13 +60,21 @@ namespace ToolsQA
                 }
 
                 package.Save();
-               
+
 
             }
-            driver.Quit();
+        }
+            private void ScrollPage(int yOffset)
+            {
+                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                js.ExecuteScript($"window.scrollBy(0, {yOffset});");
+            }
+
+            [TearDown]
+            public void Cleanup()
+            {
+                driver.Quit();
+            }
         }
     }
 
-
-   
-}
