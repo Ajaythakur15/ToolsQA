@@ -27,9 +27,7 @@ namespace ToolsQA
 
                 }
             }
-
         }
-
         [TestCaseSource(nameof(ReadExcel))]
         [Test]
         public void DataDrivenUsingExcel(string fname, string lname, string email, string age, string salary, string department)
@@ -49,20 +47,16 @@ namespace ToolsQA
             driver.FindElement(By.Id("department")).SendKeys(department);
 
             driver.Quit();
-
         }
     }
-
     public class StartPage
     {
-
         private IWebDriver driver;
 
         public StartPage(IWebDriver driver)
         {
             this.driver = driver;
         }
-
         public void ClickAdd()
         {
 
