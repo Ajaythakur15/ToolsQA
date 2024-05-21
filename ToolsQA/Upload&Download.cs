@@ -3,13 +3,14 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using NUnit.Framework;
 using System;
 using System.IO;
 
 namespace ToolsQA
 {
     [TestFixture]
-    internal class Upload_Download
+    public class Upload_Download
     {
         private IWebDriver driver;
 
