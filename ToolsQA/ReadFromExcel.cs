@@ -1,11 +1,19 @@
-﻿using OfficeOpenXml;
+﻿using NUnit.Framework;
+using OfficeOpenXml;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 namespace ToolsQA
 {
+    [TestFixture]
     public class ReadFromexcel
     {
+        private IWebDriver driver;
+        [SetUp]
+        public void OpenBrowser()
+        {
+             driver = new ChromeDriver();
+        }
 
         public static IEnumerable<object[]> ReadExcel()
         {
@@ -34,7 +42,7 @@ namespace ToolsQA
         [Test]
         public void DataDrivenUsingExcel(string fname, string lname, string email, string age, string salary, string department)
         {
-            IWebDriver driver = new ChromeDriver();
+           
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl("https://demoqa.com/webtables");
 
@@ -48,8 +56,13 @@ namespace ToolsQA
             driver.FindElement(By.Id("salary")).SendKeys(salary);
             driver.FindElement(By.Id("department")).SendKeys(department);
 
-            driver.Quit();
+           
 
+        }
+        [TearDown]
+        public void CloseBrowser()
+        {
+            driver.Quit();
         }
     }
 
