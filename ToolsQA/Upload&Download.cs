@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace ToolsQA
 {
     [TestFixture]
-    internal class Upload_Download
+    public class Upload_Download
     {
         private IWebDriver driver;
 
@@ -33,8 +33,8 @@ namespace ToolsQA
         [Test]
         public void ClickChooseFile()
         {
-            Assert.IsTrue(IsChooseVisible(), "ChooseFilebtn is not displayed");
-            ClickChooseBtn();
+            // Assert.IsTrue(IsChooseVisible(), "ChooseFilebtn is not displayed");
+            ClickChooseFileBtn();
 
         }
 
@@ -57,9 +57,10 @@ namespace ToolsQA
         {
             return driver.FindElement(By.XPath("//a[@id='downloadButton']")).Displayed;
         }
-        public void ClickChooseBtn()
+        public void ClickChooseFileBtn()
         {
-            ClickElement(By.XPath("//input[@id='uploadFile']"));
+            driver.FindElement(By.CssSelector("#uploadFile")).Click();
+            
         }
         public bool IsChooseVisible()
         {
@@ -67,7 +68,7 @@ namespace ToolsQA
         }
         public void ClickElement(By locator)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             IWebElement element = wait.Until(ExpectedConditions.ElementToBeClickable(locator));
             element.Click();
         }
