@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
