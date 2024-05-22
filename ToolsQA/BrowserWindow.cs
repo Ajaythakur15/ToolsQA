@@ -34,7 +34,7 @@ namespace ToolsQA
         {
             BrowserTestCases testcase = new BrowserTestCases(driver);
             testcase.ClickBrowser();
-            
+            ScrollDown(200);
             testcase.ClickNewTab();
             Assert.IsTrue(testcase.IsNewTabVisible(), "New tab is visible");
         }
@@ -43,7 +43,7 @@ namespace ToolsQA
         {
             BrowserTestCases testcase = new BrowserTestCases(driver);
             testcase.ClickBrowser();
-
+            ScrollDown(200);
             testcase.ClickNewWin();
             Assert.IsTrue(testcase.IsNewWinVisible(), "New tab is visible");
         }
@@ -51,9 +51,9 @@ namespace ToolsQA
         public void ClickOnNewWinMessage()
         {
             BrowserTestCases testcase = new BrowserTestCases(driver);
+            testcase.ClickBrowser();
+            ScrollDown(300);
             testcase.ClickNewWinMessage();
-
-            testcase.ClickNewWin();
             Assert.IsTrue(testcase.IsNewWinMessageVisible(), "New tab is visible");
         }
 
