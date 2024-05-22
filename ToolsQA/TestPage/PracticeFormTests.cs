@@ -34,7 +34,6 @@ namespace ToolsQA.Tests
             practiceFormPage.SelectState("NCR");
             practiceFormPage.SelectCity("Delhi");
             practiceFormPage.SubmitForm();
-
             // Add assertions to verify form submission
         }
     }
