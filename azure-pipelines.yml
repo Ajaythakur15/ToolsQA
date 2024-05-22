@@ -34,30 +34,6 @@ steps:
     command: 'custom'
     arguments: 'install NUnit.ConsoleRunner -Version 3.11.1 -OutputDirectory $(Build.ArtifactStagingDirectory)/testrunner'
 
-# Run NUnit Tests with detailed logging
-- powershell: |
-    $runnerPath = "$(Build.ArtifactStagingDirectory)/testrunner/NUnit.ConsoleRunner.3.11.1/tools/nunit3-console.exe"
-    $testDllPath = "$(Build.SourcesDirectory)/Path/To/Your/TestProject/bin/$(buildConfiguration)/YourTestProject.dll"
-
-    Write-Host "NUnit Console Runner Path: $runnerPath"
-    Write-Host "Test DLL Path: $testDllPath"
-
-    if (Test-Path $runnerPath) {
-        Write-Host "Found NUnit Console Runner at: $runnerPath"
-    } else {
-        Write-Error "NUnit Console Runner not found at: $runnerPath"
-        exit 1
-    }
-
-    if (Test-Path $testDllPath) {
-        Write-Host "Found Test DLL at: $testDllPath"
-    } else {
-        Write-Error "Test DLL not found at: $testDllPath"
-        exit 1
-    }
-
-    & $runnerPath $testDllPath --result=$(Build.ArtifactStagingDirectory)/TestResult.xml
-  displayName: 'Run NUnit Tests'
 
 - task: PublishTestResults@2
   inputs:
