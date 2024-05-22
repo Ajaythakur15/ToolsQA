@@ -1,0 +1,46 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+# Add the NUnit task to run NUnit tests and publish results
+- task: NuGetCommand@2
+  inputs:
+    command: 'custom'
+    arguments: 'install NUnit.ConsoleRunner -Version 3.11.1 -OutputDirectory $(Build.ArtifactStagingDirectory)/testrunner'
+
+- powershell: |
+    $(Build.ArtifactStagingDirectory)/testrunner/NUnit.ConsoleRunner.3.11.1/tools/nunit3-console.exe $(Build.SourcesDirectory)/Path/To/Your/TestProject/bin/$(buildConfiguration)/YourTestProject.dll
+  displayName: 'Run NUnit Tests'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/TestResult.xml'
+    testResultsFormat: 'NUnit'
+    mergeTestResults: true
+    failTaskOnFailedTests: true
