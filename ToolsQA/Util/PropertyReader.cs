@@ -9,7 +9,7 @@ namespace ToolsQA.Util
 {
     internal static class PropertyReader
     {
-        public static string GetPropertyValue(String propertyName)
+        public static string? GetPropertyValue(String propertyName)
         {
             var path = Assembly.GetCallingAssembly().CodeBase;
             if (path == null) return null;
