@@ -8,7 +8,7 @@ using System.Net.Cache;
 using System.Text;
 using System.Threading.Tasks;
 using ToolsQA.BasePage;
-using static ToolsQA.WebTablesPage;
+//using static ToolsQA.WebTablesPage;
 using static ToolsQA.webTableValues;
 
 namespace ToolsQA
