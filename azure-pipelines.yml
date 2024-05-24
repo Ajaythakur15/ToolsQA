@@ -1,5 +1,5 @@
 trigger:
-- main
+- master
 
 pool:
   vmImage: 'windows-latest'
@@ -9,9 +9,11 @@ variables:
 
 steps:
 - task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
   inputs:
     packageType: 'sdk'
     version: '$(DOTNET_VERSION)'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - script: dotnet --version
   displayName: 'Check .NET SDK Version'
@@ -30,6 +32,13 @@ steps:
     command: 'build'
     projects: 'ToolsQA.sln'
     arguments: '--configuration Release --verbosity minimal'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+    feedsToUse: 'config'
+    nugetConfigPath: 'nuget.config'
 
 - task: DotNetCoreCLI@2
   inputs:
