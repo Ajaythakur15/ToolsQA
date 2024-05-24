@@ -22,7 +22,7 @@ steps:
 
 - script: |
     echo "Restoring NuGet packages..."
-    dotnet restore ToolsQA.sln --configfile nuget.config
+    dotnet restore ToolsQA.sln --configfile $(Build.SourcesDirectory)/nuget.config
   displayName: 'Restore NuGet Packages'
 
 - task: DotNetCoreCLI@2
