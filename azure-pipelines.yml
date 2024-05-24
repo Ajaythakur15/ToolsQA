@@ -1,43 +1,44 @@
 trigger:
-- master
+- main
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  DOTNET_VERSION: '8.0.x'
 
 steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '$(DOTNET_VERSION)'
+
+- script: dotnet --version
+  displayName: 'Check .NET SDK Version'
+
 - task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
   inputs:
-    restoreSolution: '$(solution)'
+    versionSpec: '5.8.0'
 
-- task: VSBuild@1
+- script: |
+    echo "Restoring NuGet packages..."
+    dotnet restore ToolsQA.sln
+  displayName: 'Restore NuGet Packages'
+
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'build'
+    projects: 'ToolsQA.sln'
+    arguments: '--configuration Release --verbosity minimal'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-# Install NUnit.ConsoleRunner
-- task: NuGetCommand@2
-  inputs:
-    command: 'custom'
-    arguments: 'install NUnit.ConsoleRunner -Version 3.11.1 -OutputDirectory $(Build.ArtifactStagingDirectory)/testrunner'
-
+    command: 'test'
+    projects: 'ToolsQA.sln'
+    arguments: '--configuration Release --logger trx --verbosity minimal'
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: '**/TestResult.xml'
-    testResultsFormat: 'NUnit'
+    testResultsFiles: '**/TestResults/*.trx'
     mergeTestResults: true
     failTaskOnFailedTests: true
