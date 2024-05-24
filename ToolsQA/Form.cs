@@ -32,15 +32,55 @@ namespace ToolsQA
             obj.FillEmail("prachi@gmail.com");
             obj.FillMobileNumber("8283283621");
             obj.FillDOB("04/05/2001");
-           // obj.FillSubjects("Commerce");
-           // obj.FillPicture("E:\\Automation_Testing");
-            obj.FillCurrAdd("Pilkhuwa");
-
-
-
-
+            obj.FillSubjects("Commerce");
+            obj.FillPicture("C:\\Users\\prachi sharma\\Downloads\\sampleFile.jpeg");
+            obj.FillCurrAdd("I am From Pilkhuwa");
+        }
+        [Test]
+        public void CheckcheckBoxes()
+        {
+            TestCasesForm obj = new TestCasesForm(driver);
+            ScrollDown(300);
+            //obj.FillOneCheckBoxInput();
+            obj.FillTwoCheckBoxes("Sports, Reading");
+        }
+        [Test]
+        public void CheckFirstRadioButton()
+        {
+            TestCasesForm obj = new TestCasesForm(driver);
+            obj.FillFirstRadioButton();
+        }
+        [Test]
+        public void CheckSecondRadioButton()
+        {
+            TestCasesForm obj = new TestCasesForm(driver);
+            obj.FillSecondRadioButton();
+        }
+        [Test]
+        public void CheckThirdRadioButton()
+        {
+            TestCasesForm obj = new TestCasesForm(driver);
+            obj.FillThirdRadioButton();
+        }
+        [Test]
+        public void SubmitBtn()
+        {
+            TestCasesForm obj = new TestCasesForm(driver);
+            ScrollDown(400);
+            Assert.IsTrue(obj.IsBtnVisible(), "Button is not visible");
+            driver.FindElement(By.XPath("//button[@id='submit']")).Click();
 
         }
+        [Test]
+        public void DropDown()
+        {
+            TestCasesForm obj = new TestCasesForm(driver);
+            ScrollDown(400);
+            obj.FillDropDown1("NCR");
+            obj.FillDropDown2("Noida");
+
+        }
+
         public void ScrollDown(int yOffset)
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -60,12 +100,12 @@ namespace ToolsQA
         {
             this._driver = driver;
         }
-        public void waitForElementVisible(By by , int timeOutInSeconds = 60)
+        public void waitForElementVisible(By by, int timeOutInSeconds = 60)
         {
-            var wait = new WebDriverWait(_driver,TimeSpan.FromSeconds(timeOutInSeconds));
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(timeOutInSeconds));
             wait.Until(ExpectedConditions.ElementIsVisible(by));
         }
-        public void SendKeys(By by , string text , int timeOutInSeconds = 60)
+        public void SendKeys(By by, string text, int timeOutInSeconds = 60)
         {
             waitForElementVisible(by, timeOutInSeconds);
             var element = _driver.FindElement(by);
@@ -75,7 +115,7 @@ namespace ToolsQA
 
         public void FillFirstName(string firstname)
         {
-            SendKeys(FirstnameText,firstname);
+            SendKeys(FirstnameText, firstname);
         }
         public void FillLastName(string lastname)
         {
@@ -92,7 +132,7 @@ namespace ToolsQA
         public void FillDOB(string dob)
         {
             ScrollDownn(400);
-            var dateInput = _driver.FindElement(By.Id("dateOfBirthInput"));
+            var dateInput = GetElement(DOBInput);
             dateInput.Click();
             dateInput.SendKeys(dob);
             dateInput.SendKeys(Keys.Enter);
@@ -103,8 +143,7 @@ namespace ToolsQA
         }
         public void FillPicture(string path)
         {
-            IWebElement element = _driver.FindElement(By.XPath("//input[@id='uploadPicture']"));
-            element.Click();
+
             SendKeys(PictureInput, path);
         }
         public void FillCurrAdd(string address)
@@ -112,17 +151,68 @@ namespace ToolsQA
             SendKeys(AddressInput, address);
         }
 
+        /////For CheckBoxes
+        public void FillOneCheckBoxInput()
+        {
+            ClickElement(OneCheckBoxInput);
+
+
+        }
+        public void FillTwoCheckBoxes(string hobbies)
+        {
+            foreach (var hobby in hobbies.Split(','))
+            {
+                ClickElement(TwoCheckBoxInputs(hobby.Trim()));
+            }
+        }
+
+        public void FillSecondRadioButton()
+        {
+            ClickElement(SecondRadioButtonInput);
+        }
+        public void FillFirstRadioButton()
+        {
+            ClickElement(FirstRadioButtonInput);
+        }
+        public void FillThirdRadioButton()
+        {
+            ClickElement(ThirdRadioButtonInput);
+        }
+        public void FillDropDown1(string state)
+        {
+            ClickElement(DropDown1);
+            ClickElement(By.XPath($"//div[text()='{state}']"));
+        }
+        public void FillDropDown2(string city)
+        {
+            ClickElement(DropDown2);
+            ScrollDownn(200);
+            ClickElement(By.XPath($"//div[text()='{city}']"));
+        }
+
         private By FirstnameText => By.Id("firstName");
         private By LastNameInput => By.Id("lastName");
         private By EmailInput => By.Id("userEmail");
         private By MobileInput => By.Id("userNumber");
-       // private By DOBInput => By.Id("dateOfBirthInput");
-        private By SubjectsInput => By.Id("'subjectsInput");
+        private By DOBInput => By.Id("dateOfBirthInput");
+        private By SubjectsInput => By.Id("subjectsInput");
         private By PictureInput => By.Id("uploadPicture");
         private By AddressInput => By.Id("currentAddress");
+        private By OneCheckBoxInput => By.XPath("//label[contains(text(),'Music')]");
+        private By TwoCheckBoxInputs(string hobby) => By.XPath($"//label[text()='{hobby}']");
+        private By SecondRadioButtonInput => By.XPath("//label[contains(text(),'Female')]");
+        private By FirstRadioButtonInput => By.XPath("//label[contains(text(),'Male')]");
+        private By ThirdRadioButtonInput => By.XPath("//label[contains(text(),'Other')]");
+        private By DropDown1 => By.Id("state");
+        private By DropDown2 => By.Id("city");
 
 
 
+        public IWebElement GetElement(By by, int timeOutInSeconds = 60)
+        {
+            waitForElementVisible(by, timeOutInSeconds);
+            return _driver.FindElement(by);
+        }
 
 
         public void ScrollDownn(int yOffset)
@@ -130,5 +220,17 @@ namespace ToolsQA
             IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
             js.ExecuteScript($"window.scrollBy(0,{yOffset});");
         }
+        public void ClickElement(By by, int timeOutInSeconds = 60)
+        {
+            waitForElementVisible(by, timeOutInSeconds);
+            _driver.FindElement(by).Click();
+        }
+
+        public bool IsBtnVisible()
+        {
+            return _driver.FindElement(By.XPath("//button[@id='submit']")).Displayed;
+        }
     }
 }
+
+
