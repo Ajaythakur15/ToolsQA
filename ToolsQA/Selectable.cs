@@ -45,8 +45,8 @@ namespace ToolsQA
         private By GridTwo => By.XPath("//li[contains(text(),'Two')]");
         private By GridFour => By.XPath("//li[contains(text(),'Four')]");
         private By ClickOnList => By.XPath("//a[@id='demo-tab-list']");
-        private By ListFive => By.XPath("//li[contains(text(),'Five')]");
-        private By ListNine => By.XPath("//li[contains(text(),'Nine')]");
+        private By ListThree => By.XPath("//li[contains(text(),'Morbi leo risus')]");
+        private By ListFour => By.XPath("//li[contains(text(),'Porta ac consectetur ac')]");
 
 
         public void ClickElement(By by, int TimeOutInSeconds = 30)
@@ -66,8 +66,8 @@ namespace ToolsQA
         public void ClickList()
         {
             ClickElement(ClickOnList);
-            ClickElement(ListFive);
-            ClickElement(ListNine);
+            ClickElement(ListThree);
+            ClickElement(ListFour);
         }
 
     }
