@@ -96,7 +96,7 @@ namespace ToolsQA
             ClickElement(selectoldvalue);
         }
         public void FillMultiselect()
-        {
+        { 
             ClickElement(Multiselect);
             ClickElement(ColourBlue);
             ClickElement(ColourBlack);
