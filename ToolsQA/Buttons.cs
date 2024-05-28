@@ -42,7 +42,7 @@ namespace ToolsQA
                 IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
 
                 Assert.IsNotNull(alert);
-                Assert.AreEqual(expectedAlertText, alert.Text);
+                Assert.AreEqual(expectedAlertText, alert.Text,"it is not");
 
                 alert.Accept();
             }
