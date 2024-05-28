@@ -53,6 +53,33 @@ namespace ToolsQA
             Assert.IsTrue(dropableMethods.IsthisofGreedy(),"This is not greedy");
 
         }
+        [Test]
+        public void RevertDragableCheck()
+        {
+            var dropableMethods = new DropableMethods(driver);
+            driver.FindElement(By.Id("droppableExample-tab-revertable")).Click();
+            var initialLocation = dropableMethods.GetDragableLocation();
+
+            dropableMethods.RevertDragable();
+            var finalLocation = dropableMethods.GetDraggableElementLocation();
+            Assert.AreEqual(initialLocation, finalLocation, "Dragged element should revert to initial position");
+            
+        }
+        [Test]
+        public void NotRevertCheck()
+        {
+            var dropableMethods = new DropableMethods(driver);
+            driver.FindElement(By.Id("droppableExample-tab-revertable")).Click();
+            var initialLocation = dropableMethods.GetDragableLocation2();
+
+            dropableMethods.NotRevertDragable();
+            var finalLocation = dropableMethods.GetDraggableElementLocation2();
+            Assert.AreNotEqual(initialLocation, finalLocation, "Dragged element should stay in the new position");
+
+
+
+        }
+        
         public void ScrollDown(int yOffset)
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -81,6 +108,9 @@ namespace ToolsQA
         private By DragBox => By.Id("dragBox");
         private By InnerBox => By.Id("notGreedyInnerDropBox");
         private By OuterBox => By.Id("notGreedyDropBox");
+        private By Revert => by.Id("revertable");
+        private By RevertNot => by.Id("notRevertable");
+        private By DragRevert => by.Id("droppable");
 
         public void DragElement()
         {
@@ -134,6 +164,31 @@ namespace ToolsQA
             IWebElement Dropable5 = driver.FindElement(OuterBox);
             Actions action = new Actions(driver);
             action.DragAndDrop(Dragable5, Dropable5).Build().Perform();
+        }
+        public void RevertDragable()
+        {
+            IWebElement Dragable6 = driver.FindElement(Revert);
+            IWebElement Dropable6 = driver.FindElement(DragRevert);
+            Actions action = new Actions(driver);
+            action.DragAndDrop(Dragable6, Dropable6).Build().Perform();
+        }
+        public bool GetDragableLocation()
+        {
+            IWebElement draggableElement = driver.FindElement(Revert);
+            return draggableElement.Location;
+        }
+        public void NotRevertDragable()
+        {
+            IWebElement Dragable7 = driver.FindElement(RevertNot);
+            IWebElement Dropable7 = driver.FindElement(DragRevert);
+            Actions action = new Actions(driver);
+            action.DragAndDrop(Dragable7, Dropable7).Build().Perform();
+        }
+
+        public bool GetDragableLocation2()
+        {
+            IWebElement draggableElement = driver.FindElement(RevertNot);
+            return draggableElement.Location;
         }
 
     }
