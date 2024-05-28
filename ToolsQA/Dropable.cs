@@ -4,6 +4,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace ToolsQA
             var initialLocation = dropableMethods.GetDragableLocation();
 
             dropableMethods.RevertDragable();
-            var finalLocation = dropableMethods.GetDraggableElementLocation();
+            var finalLocation = dropableMethods.GetDragableLocation();
             Assert.AreEqual(initialLocation, finalLocation, "Dragged element should revert to initial position");
             
         }
@@ -73,7 +74,7 @@ namespace ToolsQA
             var initialLocation = dropableMethods.GetDragableLocation2();
 
             dropableMethods.NotRevertDragable();
-            var finalLocation = dropableMethods.GetDraggableElementLocation2();
+            var finalLocation = dropableMethods.GetDragableLocation2();
             Assert.AreNotEqual(initialLocation, finalLocation, "Dragged element should stay in the new position");
 
 
@@ -108,9 +109,9 @@ namespace ToolsQA
         private By DragBox => By.Id("dragBox");
         private By InnerBox => By.Id("notGreedyInnerDropBox");
         private By OuterBox => By.Id("notGreedyDropBox");
-        private By Revert => by.Id("revertable");
-        private By RevertNot => by.Id("notRevertable");
-        private By DragRevert => by.Id("droppable");
+        private By Revert => By.Id("revertable");
+        private By RevertNot => By.Id("notRevertable");
+        private By DragRevert => By.Id("droppable");
 
         public void DragElement()
         {
@@ -172,7 +173,7 @@ namespace ToolsQA
             Actions action = new Actions(driver);
             action.DragAndDrop(Dragable6, Dropable6).Build().Perform();
         }
-        public bool GetDragableLocation()
+        public Point GetDragableLocation()
         {
             IWebElement draggableElement = driver.FindElement(Revert);
             return draggableElement.Location;
@@ -185,7 +186,7 @@ namespace ToolsQA
             action.DragAndDrop(Dragable7, Dropable7).Build().Perform();
         }
 
-        public bool GetDragableLocation2()
+        public Point GetDragableLocation2()
         {
             IWebElement draggableElement = driver.FindElement(RevertNot);
             return draggableElement.Location;
