@@ -28,6 +28,7 @@ namespace ToolsQA
             LoginMethods obj = new LoginMethods(driver);
             obj.FillUsername("Prachi");
             obj.FillPassword("1234");
+            ScrollDown(200);
             obj.LoginClick();
             Assert.IsTrue(obj.IsLoginClick(),"Login Button is not visible");
 
@@ -36,8 +37,18 @@ namespace ToolsQA
         public void NewUser()
         {
             LoginMethods obj = new LoginMethods(driver);
+            ScrollDown(100);
             obj.NewUserClick();
             Assert.IsFalse(obj.IsNewUserClick(),"NewUser is visible");
+            ScrollDown(300);
+            obj.FillFirstName("ketan");
+            obj.FillLastName("singh");
+            obj.FillUsername("KS");
+            obj.FillPassword("@Prachi1");
+            ScrollDown(300);
+            obj.FillCheckBox();
+            obj.ClickRegisterBtn();
+            Assert.IsTrue(obj.IsRegisterBtn(),"Register button is not visible");
         }
         [TearDown]
         public void CloseBrowser()
@@ -62,7 +73,7 @@ namespace ToolsQA
         public void ClickElement(By by , int timeOutInSeconds = 40)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeOutInSeconds));
-            IWebElement element =  wait.Until(ExpectedConditions.ElementIsVisible(by));
+            IWebElement element =  wait.Until(ExpectedConditions.ElementToBeClickable(by));
             element.Click();
         }
         public void SendKeys(By by,string text , int timeOutInSeconds = 40)
@@ -73,9 +84,13 @@ namespace ToolsQA
         }
 
         private By UsernameId => By.Id("userName");
-        public By PasswordId => By.Id("password");
-        public By LoginBtnId => By.Id("login");
-        private By NewUserId => By.Id("newUser");
+        private By PasswordId => By.Id("password");
+        private By LoginBtnId => By.XPath("//button[contains(text(),'Login')]");
+        private By NewUserId => By.XPath("//button[contains(text(),'New User')]");
+        private By FirstNameId => By.Id("firstname");
+        private By LastNameId => By.Id("lastname");
+        private By RegisterId => By.Id("register");
+        private By CheckBoxId => By.XPath("//div[@id='g-recaptcha']");
         public void FillUsername(string text)
         { 
             SendKeys(UsernameId, text);
@@ -90,7 +105,14 @@ namespace ToolsQA
         }
         public bool IsLoginClick()
         {
-            return driver.FindElement(By.Id("login")).Displayed;
+            try
+            {
+                return driver.FindElement(LoginBtnId).Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
         public void NewUserClick()
         {
@@ -98,7 +120,41 @@ namespace ToolsQA
         }
         public bool IsNewUserClick()
         {
-            return driver.FindElement(By.Id("newUser")).Displayed;
+            try
+            {
+                return driver.FindElement(NewUserId).Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
+        public void FillFirstName(string text)
+        {
+            SendKeys(FirstNameId,text);
+        }
+        public void FillLastName(string text)
+        {
+            SendKeys(LastNameId, text);
+        }
+        public void ClickRegisterBtn()
+        {
+            ClickElement(RegisterId);
+        }
+        public bool IsRegisterBtn()
+        {
+            try
+            {
+                return driver.FindElement(RegisterId).Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                return true; 
+            }
+        }
+        public void FillCheckBox()
+        {
+            ClickElement(CheckBoxId);
         }
 
     }
