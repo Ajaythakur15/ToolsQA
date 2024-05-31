@@ -14,14 +14,16 @@ namespace ToolsQA.TestPage
     public class BaseTest
     {
         protected IWebDriver Driver;
-        private readonly string _baseUrl = Constants.BaseUrl;
+       // private readonly string _baseUrl = Constants.BaseUrl;
+        private readonly string _baseUrl2 = Constants.BaseUrl2;
 
         [SetUp]
         public void SetUp()
         {
             Driver = new ChromeDriver();
             Driver.Manage().Window.Maximize();
-            Driver.Navigate().GoToUrl(_baseUrl);
+            //Driver.Navigate().GoToUrl(_baseUrl);
+            Driver.Navigate().GoToUrl(_baseUrl2);
         }
 
         [TearDown]
