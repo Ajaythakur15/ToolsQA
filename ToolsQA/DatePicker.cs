@@ -27,11 +27,13 @@ namespace ToolsQA
         public void SelectDate()
         {
             ClickOnSelectDate();
+            Assert.AreEqual("06/05/2000",IsSelectDate("datePickerMonthYearInput"), "Date is incorrect");
         }
         [Test]
         public void SelectDateAnTime()
         {
             ClickOnSelectDateTime();
+            Assert.AreEqual("September 15, 2029 3:00 PM", IsSelectDateAnTime("dateAndTimePickerInput"), "Date an time are not same");
         }
 
         public void ScrollDown(int yOffset)
@@ -75,6 +77,10 @@ namespace ToolsQA
             ClickElement(ClickOnYear);
             ClickElement(ClickOnDate);
         }
+        public string IsSelectDate(string id)
+        {
+            return driver.FindElement(By.Id(id)).GetAttribute("value");
+        }
 
         public void ClickOnSelectDateTime()
         {
@@ -85,6 +91,10 @@ namespace ToolsQA
             ClickElement(ClickOnYear2);
             ClickElement(ClickOnDate2);
             ClickElement(ClickOnTime);
+        }
+        public string IsSelectDateAnTime(string id)
+        {
+            return driver.FindElement(By.Id(id)).GetAttribute("value");
         }
 
 

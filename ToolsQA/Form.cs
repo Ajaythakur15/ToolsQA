@@ -31,10 +31,19 @@ namespace ToolsQA
             obj.FillLastName("Sharma");
             obj.FillEmail("prachi@gmail.com");
             obj.FillMobileNumber("8283283621");
-            obj.FillDOB("04/05/2001");
-            obj.FillSubjects("Commerce");
+            obj.FillDOB();
+            obj.FillSubjects("Commerce","Biology");
             obj.FillPicture("C:\\Users\\prachi sharma\\Downloads\\sampleFile.jpeg");
             obj.FillCurrAdd("I am From Pilkhuwa");
+
+            Assert.AreEqual("Prachi",obj.GetTextBoxValue("firstName"),"FirstName value does not matched");
+            Assert.AreEqual("Sharma",obj.GetTextBoxValue("lastName"),"Last name does not matched");
+            Assert.AreEqual("prachi@gmail.com",obj.GetTextBoxValue("userEmail"),"Email does not matched");
+            Assert.AreEqual("8283283621",obj.GetTextBoxValue("userNumber"),"Mobile number does not matched");
+            Assert.AreEqual("04/05/2001",obj.GetTextBoxValue("dateOfBirthInput"),"Dob does not matched");
+            Assert.IsTrue(obj.IsSubjectSelected(),"Subject Commerce does not matched");
+            Assert.AreEqual("I am From Pilkhuwa",obj.GetTextBoxValue("currentAddress"),"Address does not matched");
+
         }
         [Test]
         public void CheckcheckBoxes()
@@ -43,24 +52,28 @@ namespace ToolsQA
             ScrollDown(300);
             //obj.FillOneCheckBoxInput();
             obj.FillTwoCheckBoxes("Sports, Reading");
+            Assert.IsTrue(obj.IsCheckboxChecked(), "Checkbox is not checked");
         }
         [Test]
         public void CheckFirstRadioButton()
         {
             TestCasesForm obj = new TestCasesForm(driver);
             obj.FillFirstRadioButton();
+            Assert.IsTrue(obj.IsCheckFirstRadioButton(), "First Radio button is not get selected");
         }
         [Test]
         public void CheckSecondRadioButton()
         {
             TestCasesForm obj = new TestCasesForm(driver);
             obj.FillSecondRadioButton();
+            Assert.IsTrue(obj.IsCheckSecondRadioButton(), "Second Radio button is not get selected");
         }
         [Test]
         public void CheckThirdRadioButton()
         {
             TestCasesForm obj = new TestCasesForm(driver);
             obj.FillThirdRadioButton();
+            Assert.IsTrue(obj.IsCheckThirdRadioButton(), "Third Radio button is not get selected");
         }
         [Test]
         public void SubmitBtn()
@@ -78,6 +91,9 @@ namespace ToolsQA
             ScrollDown(400);
             obj.FillDropDown1("NCR");
             obj.FillDropDown2("Noida");
+
+            Assert.IsTrue(obj.IsDropdown1(),"State is not same");
+            Assert.IsTrue(obj.IsDropdown1(), "City is not same");
 
         }
 
@@ -111,6 +127,7 @@ namespace ToolsQA
             var element = _driver.FindElement(by);
             element.Clear();
             element.SendKeys(text);
+            element.SendKeys(Keys.Enter);
         }
 
         public void FillFirstName(string firstname)
@@ -129,17 +146,33 @@ namespace ToolsQA
         {
             SendKeys(MobileInput, number);
         }
-        public void FillDOB(string dob)
+        public void FillDOB()
         {
             ScrollDownn(400);
-            var dateInput = GetElement(DOBInput);
-            dateInput.Click();
-            dateInput.SendKeys(dob);
-            dateInput.SendKeys(Keys.Enter);
+            ClickElement(SelectMonth);
+            ClickElement(SelectMay);
+            ClickElement(SelectYear);
+            ClickElement(Select2001);
+            ClickElement(SelectDate);
+
+            
         }
-        public void FillSubjects(string subjects)
+        public void FillSubjects(params string[] subjects)
         {
-            SendKeys(SubjectsInput, subjects);
+            IWebElement element = _driver.FindElement(SubjectsInput);
+            element.Click();
+            foreach( var subject in subjects)
+            {
+                element.SendKeys(subject);
+                //ClickElement(By.XPath($"//div[contains(text(),'{subject}')]"));
+                element.SendKeys(Keys.Enter);
+                
+            }
+        
+        }
+        public bool IsSubjectSelected()
+        {
+            return _driver.FindElement(SubjectCommerce).Selected;
         }
         public void FillPicture(string path)
         {
@@ -189,6 +222,16 @@ namespace ToolsQA
             ScrollDownn(200);
             ClickElement(By.XPath($"//div[text()='{city}']"));
         }
+        public bool IsDropdown1()
+        {
+            return _driver.FindElement(By.XPath("//div[contains(text(),'NCR')]")).Displayed;
+        }
+        public bool IsDropdown2()
+        {
+            var dropdown = _driver.FindElement(DropDown2);
+            var option = dropdown.FindElement(By.XPath("//div[contains(text(),'Noida')]"));
+            return option.Displayed;
+        }
 
         private By FirstnameText => By.Id("firstName");
         private By LastNameInput => By.Id("lastName");
@@ -196,6 +239,12 @@ namespace ToolsQA
         private By MobileInput => By.Id("userNumber");
         private By DOBInput => By.Id("dateOfBirthInput");
         private By SubjectsInput => By.Id("subjectsInput");
+        private By SubjectCommerce => By.XPath("//div[contains(text(),'Commerce')]");
+        private By SelectMonth => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/form[1]/div[5]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/select[1]");
+        private By SelectMay => By.XPath("//option[contains(text(),'May')]");
+        private By SelectYear => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/form[1]/div[5]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[1]/div[2]/div[2]/select[1]");
+        private By Select2001 => By.XPath("//option[contains(text(),'2001')]");
+        private By SelectDate => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/form[1]/div[5]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[2]/div[1]/div[6]");
         private By PictureInput => By.Id("uploadPicture");
         private By AddressInput => By.Id("currentAddress");
         private By OneCheckBoxInput => By.XPath("//label[contains(text(),'Music')]");
@@ -229,6 +278,29 @@ namespace ToolsQA
         public bool IsBtnVisible()
         {
             return _driver.FindElement(By.XPath("//button[@id='submit']")).Displayed;
+        }
+
+        public string GetTextBoxValue(string id)
+        {
+            return _driver.FindElement(By.Id(id)).GetAttribute("value");
+        }
+
+        public bool IsCheckboxChecked()
+        {
+            return _driver.FindElement(By.Id("hobbies-checkbox-1")).GetAttribute("class").Contains("custom-control-input");
+
+        }
+        public bool IsCheckFirstRadioButton()
+        {
+            return _driver.FindElement(By.Id("gender-radio-1")).GetAttribute("class").Contains("custom-control-input");
+        }
+        public bool IsCheckSecondRadioButton()
+        {
+            return _driver.FindElement(By.Id("gender-radio-2")).GetAttribute("class").Contains("custom-control-input");
+        }
+        public bool IsCheckThirdRadioButton()
+        {
+            return _driver.FindElement(By.Id("gender-radio-3")).GetAttribute("class").Contains("custom-control-input");
         }
     }
 }

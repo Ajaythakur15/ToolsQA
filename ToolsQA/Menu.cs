@@ -27,16 +27,19 @@ namespace ToolsQA
         public void MenuItem1()
         {
             HoveranClickMenu1();
+            IsHoveranClickMenu1();
         }
         [Test]
         public void MenuItem2()
         {
             HoveranClickMenu2();
+            IsHoveranClickMenu2();
         }
         [Test]
         public void MenuItem3()
         {
             HoveranClickMenu3();
+            IsHoveranClickMenu3();
         }
         public void ScrollDown(int yOffset)
         {
@@ -65,6 +68,10 @@ namespace ToolsQA
             ClickElement(MenuId1);
 
         }
+        public bool IsHoveranClickMenu1()
+        {
+            return driver.FindElement(MenuId1).Selected;
+        }
         public void HoveranClickMenu2()
         {
             IWebElement element = driver.FindElement(MenuId2);
@@ -80,6 +87,10 @@ namespace ToolsQA
             act.MoveToElement(ele3).Perform();
             ClickElement(MenuId2SubListItem);
         }
+        public bool IsHoveranClickMenu2()
+        {
+            return driver.FindElement(MenuId2SubListItem).Selected;
+        }
         public void HoveranClickMenu3()
         {
             IWebElement element = driver.FindElement(MenuId3);
@@ -87,6 +98,10 @@ namespace ToolsQA
             action.MoveToElement(element).Perform();
             ClickElement(MenuId3);
 
+        }
+        public bool IsHoveranClickMenu3()
+        {
+            return driver.FindElement(MenuId3).Selected;
         }
 
         public void ClickElement(By by , int TimeOutInSeconds = 30)

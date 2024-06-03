@@ -33,6 +33,12 @@ namespace ToolsQA
             ScrollElementDown(element);
             //ScrollElementUp(element);
             //driver.SwitchTo().DefaultContent();
+            Assert.IsTrue(IsVisible(), "Frame is not visible");
+        }
+
+        public bool IsVisible()
+        {
+            return driver.FindElement(By.XPath("//h1[@id='sampleHeading']")).Displayed;
         }
         public void ScrollElementDown(IWebElement element)
         {
@@ -61,10 +67,10 @@ namespace ToolsQA
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript($"window.scrollBy(0,{yOffset});");
         }
-       /* [TearDown]
+        [TearDown]
         public void CloseBrowser()
         {
             driver.Quit();
-        }*/
+        }
     }
 }
