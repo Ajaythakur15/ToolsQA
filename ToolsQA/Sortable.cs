@@ -6,6 +6,7 @@ using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,10 +27,17 @@ namespace ToolsQA
             
         }
         [Test]
-        public void SortableElements()
+        public void SortableGridElements()
         {
             Grid();
+            Assert.IsTrue(IsGridElementVisible(),"Five is not selected");
+           
+        }
+        [Test]
+        public void SortableListElemenets()
+        {
             List();
+            Assert.IsTrue(IsListElementVisible(), "Two is not selected");
         }
         public void ScrollDown(int yOffset)
         {
@@ -53,17 +61,25 @@ namespace ToolsQA
         private By ClickGrid => By.XPath("//a[@id='demo-tab-grid']");
         private By ClickGridValue => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/div[5]");
         private By ClickList => By.XPath("//a[@id='demo-tab-list']");
-        private By ClickListValue => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[4]");
+        private By ClickListValue => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[2]");
 
         public void Grid()
         {
             ClickElement(ClickGrid);
             ClickElement(ClickGridValue);
         }
+        public bool IsGridElementVisible()
+        {
+            return driver.FindElement(ClickGridValue).Displayed;
+        }
         public void List()
         {
             ClickElement(ClickList);
             ClickElement(ClickListValue);
+        }
+        public bool IsListElementVisible()
+        {
+            return driver.FindElement(ClickListValue).Displayed;
         }
     }
 }

@@ -33,11 +33,11 @@ namespace ToolsQA
             js.ExecuteScript($"window.scrollBy(0,{yOffset});");
         }
 
-        [TearDown]
+       /* [TearDown]
         public void CloseBrowser()
         {
             driver.Quit();
-        }
+        }*/
 
 
         public void ScrollRight()
@@ -49,7 +49,7 @@ namespace ToolsQA
             ((IJavaScriptExecutor)driver).ExecuteScript($"arguments[0].setAttribute('style','{newStyle}')",element);
             System.Threading.Thread.Sleep(10000);
             string updatedStyle = element.GetAttribute("style");
-           // Assert.IsTrue(updatedStyle.Contains("left: calc(75% - 5px)"), "Slider handle not scrolled to the left as expected.");
+            Assert.IsTrue(updatedStyle.Contains("left: calc(75% - 5px)"), "Slider handle not scrolled to the left as expected.");
         }
     }
 

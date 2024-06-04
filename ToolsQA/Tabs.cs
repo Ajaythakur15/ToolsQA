@@ -27,16 +27,19 @@ namespace ToolsQA
         public void Origin()
         {
             ClickOrigin();
+            Assert.IsTrue(IsOriginVisible(),"Origin tab is not visible");
         }
         [Test]
         public void Use()
         {
             ClickUse();
+            Assert.IsTrue(IsUseVisible(),"Use tab is not visible");
         }
         [Test]
         public void What()
         {
             ClickWhat();
+            Assert.IsTrue(IsWhatVisible(), "What tab is not visible");
         }
         public void ScrollDown(int yOffset)
         {
@@ -56,13 +59,25 @@ namespace ToolsQA
         {
             ClickElement(OriginId);
         }
+        public bool IsOriginVisible()
+        {
+            return driver.FindElement(OriginId).Displayed;
+        }
         public void ClickUse()
         {
             ClickElement(UseId);
         }
+        public bool IsUseVisible()
+        {
+            return driver.FindElement(UseId).Displayed;
+        }
         public void ClickWhat()
         {
             ClickElement(WhatId);
+        }
+        public bool IsWhatVisible()
+        {
+            return driver.FindElement(WhatId).Displayed;
         }
 
         public void ClickElement(By by, int TimeOutInSeconds = 60)
