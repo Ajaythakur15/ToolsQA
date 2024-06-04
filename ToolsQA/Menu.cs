@@ -27,19 +27,19 @@ namespace ToolsQA
         public void MenuItem1()
         {
             HoveranClickMenu1();
-            IsHoveranClickMenu1();
+            Assert.IsTrue(IsHoveranClickMenu1(),"Menu 1 is not get selected");
         }
         [Test]
         public void MenuItem2()
         {
             HoveranClickMenu2();
-            IsHoveranClickMenu2();
+            Assert.IsTrue(IsHoveranClickMenu2(), "Menu 2 is not get selected");
         }
         [Test]
         public void MenuItem3()
         {
             HoveranClickMenu3();
-            IsHoveranClickMenu3();
+            Assert.IsTrue(IsHoveranClickMenu3(), "Menu 3 is not get selected");
         }
         public void ScrollDown(int yOffset)
         {
