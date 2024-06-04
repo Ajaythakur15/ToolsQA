@@ -31,9 +31,9 @@ namespace ToolsQA
             obj.FillOne();
             obj.FillOldOne();
 
-            Assert.AreEqual("Group 2, option 1", obj.GetSelectedText(SelectValuePath),"not matched");
-            Assert.AreEqual("Mrs.", obj.GetSelectedText(SelectOnePath),"not matched");
-            Assert.AreEqual("White", obj.GetSelectedText(selectOldSelectMenu),"not matched");
+            Assert.AreEqual("Group 2, option 1", obj.GetSelectedText(obj.SelectValuePath),"not matched");
+            Assert.AreEqual("Mrs.", obj.GetSelectedText(obj.SelectOnePath),"not matched");
+            Assert.AreEqual("White", obj.GetSelectedText(obj.selectOldSelectMenu),"not matched");
         }
 
     
@@ -69,17 +69,17 @@ namespace ToolsQA
         }
 
 
-        private By SelectValuePath => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]");
-        private By selectvalue => By.XPath("//div[contains(text(),'Group 2, option 1')]");
-        private By SelectOnePath => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[4]/div[1]/div[1]/div[1]/div[1]");
-        private By selectone => By.XPath("//div[contains(text(),'Mrs.')]");
-        private By selectOldSelectMenu => By.XPath("//select[@id='oldSelectMenu']");
-        private By selectoldvalue => By.XPath("//option[contains(text(),'White')]");
-        private By Multiselect => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[7]/div[1]/div[1]/div[1]/div[1]");
-        private By ColourBlue => By.XPath("//div[contains(text(),'Blue')]");
-        private By ColourBlack => By.XPath("//div[contains(text(),'Black')]");
-        private By ColourGreen => By.XPath("//div[contains(text(),'Green')]");
-        private By CarName => By.XPath("//option[contains(text(),'Audi')]");
+        public By SelectValuePath => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]");
+        public By selectvalue => By.XPath("//div[contains(text(),'Group 2, option 1')]");
+        public By SelectOnePath => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[4]/div[1]/div[1]/div[1]/div[1]");
+        public By selectone => By.XPath("//div[contains(text(),'Mrs.')]");
+        public By selectOldSelectMenu => By.XPath("//select[@id='oldSelectMenu']");
+        public By selectoldvalue => By.XPath("//option[contains(text(),'White')]");
+        public By Multiselect => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[7]/div[1]/div[1]/div[1]/div[1]");
+        public By ColourBlue => By.XPath("//div[contains(text(),'Blue')]");
+        public By ColourBlack => By.XPath("//div[contains(text(),'Black')]");
+        public By ColourGreen => By.XPath("//div[contains(text(),'Green')]");
+        public By CarName => By.XPath("//option[contains(text(),'Audi')]");
 
 
 
@@ -100,9 +100,9 @@ namespace ToolsQA
             ClickElement(selectOldSelectMenu);
             ClickElement(selectoldvalue);
         }
-         public bool GetSelectedText(object id)
+         public string GetSelectedText(By path)
          {
-           
+            return driver.FindElement(path).GetAttribute("value");
          }
         public void FillMultiselect()
         { 
