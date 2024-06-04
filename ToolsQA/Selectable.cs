@@ -25,9 +25,16 @@ namespace ToolsQA
 
         }
         [Test]
-        public void Selectablelements()
+        public void SelectableGridelements()
         {
+            Assert.IsTrue(IsSelectableGridelements(), "Grid is not visible");
             ClickGrid();
+           
+        }
+        [Test]
+        public void SelectableListelements()
+        {
+            Assert.IsTrue(IsSelectableListelements(), "List is not visible");
             ClickList();
         }
         public void ScrollDown(int yOffset)
@@ -60,14 +67,42 @@ namespace ToolsQA
         {
             ClickElement(ClickOnGrid);
             ClickElement(GridTwo);
+            Assert.IsTrue(IsTwoVisible(), "Two is not visible");
             ClickElement(GridFour);
+            Assert.IsTrue(IsFourVisible(), "Four is not visible");
+        }
+        public bool IsSelectableGridelements()
+        {
+            return driver.FindElement(ClickOnGrid).Displayed;
+        }
+        public bool IsTwoVisible()
+        {
+            return driver.FindElement(GridTwo).Displayed;
+        }
+        public bool IsFourVisible()
+        {
+            return driver.FindElement(GridFour).Displayed;
         }
 
         public void ClickList()
         {
             ClickElement(ClickOnList);
             ClickElement(ListThree);
+            Assert.IsTrue(IsListThreeVisible(), "Two is not visible");
             ClickElement(ListFour);
+            Assert.IsTrue(IsListFourVisible(), "Two is not visible");
+        }
+        public bool IsSelectableListelements()
+        {
+            return driver.FindElement(ClickOnList).Displayed;
+        }
+        public bool IsListThreeVisible()
+        {
+            return driver.FindElement(GridTwo).Displayed;
+        }
+        public bool IsListFourVisible()
+        {
+            return driver.FindElement(GridFour).Displayed;
         }
 
     }

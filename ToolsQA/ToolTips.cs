@@ -28,11 +28,13 @@ namespace ToolsQA
         public void Hoverhere()
         {
             HoverElement();
+            Assert.IsTrue(IsHoverVisible(),"Hover here is not visible");
         }
         [Test]
         public void InputBoxHover()
         {
             HoverInputElement();
+            Assert.IsTrue(IsHoverInput(), "Hover here is not visible");
         }
 
         public void ScrollDown(int yOffset)
@@ -57,12 +59,20 @@ namespace ToolsQA
             action.MoveToElement(element).Perform();
            
         }
+        public bool  IsHoverVisible()
+        {
+            return driver.FindElement(HovermeId).Displayed;
+        }
 
         public void HoverInputElement()
         {
             IWebElement ele = driver.FindElement(HoverInput);
             Actions action = new Actions(driver);
             action.MoveToElement(ele).Perform();
+        }
+        public bool IsHoverInput()
+        {
+            return driver.FindElement(HoverInput).Displayed;
         }
     }
 }

@@ -31,7 +31,12 @@ namespace ToolsQA
             obj.FillOne();
             obj.FillOldOne();
 
+            Assert.AreEqual("Group 2, option 1", obj.GetSelectedText(SelectValuePath),"not matched");
+            Assert.AreEqual("Mrs.", obj.GetSelectedText(SelectOnePath),"not matched");
+            Assert.AreEqual("White", obj.GetSelectedText(selectOldSelectMenu),"not matched");
         }
+
+    
         [Test]
         public void MultiDropDowns()
         {
@@ -95,6 +100,10 @@ namespace ToolsQA
             ClickElement(selectOldSelectMenu);
             ClickElement(selectoldvalue);
         }
+         public bool GetSelectedText(object id)
+         {
+           
+         }
         public void FillMultiselect()
         { 
             ClickElement(Multiselect);
