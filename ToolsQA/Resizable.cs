@@ -6,6 +6,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +29,11 @@ namespace ToolsQA
         public void ResizeBox1()
         {
             var testCase = new TestCaseOfResize(driver);
+            var initializesize = testCase.GetResizeElement();
             // Call the method to perform the resize action
             testCase.ResizeElement();
+            var finalsize = testCase.GetResizeElement();
+            Assert.AreEqual(initializesize,finalsize,"Resizeable element size did not change ");
         }
         public void ScrollDown(int yOffset)
         {
@@ -62,6 +66,12 @@ namespace ToolsQA
             action.MoveToElement(resizeHandle).ClickAndHold().MoveByOffset(xoffset, yoffset).Release().Build().Perform();
             //action.ClickAndHold(RezieHandel).MoveByOffset(xoffset, yoffset).Release().Build().Perform();
 
+        }
+
+       public Size GetResizeElement()
+        {
+            IWebElement resizeElement = driver.FindElement(DragArrow);
+            return resizeElement.Size;
         }
     }
 }
