@@ -35,6 +35,8 @@ namespace ToolsQA
         {
             MethodsForMulticolour obj = new MethodsForMulticolour(driver);
             obj.Input2("y");
+            
+            Assert.AreEqual("y",obj.IsInput2(), "Value does not matched");
         }
 
         public void ScrollDown(int yOffset)
@@ -65,6 +67,11 @@ namespace ToolsQA
             ClickElement(FillInput2);
             SendKeys(FillInput2,color);
             
+        }
+        public string IsInput2()
+        {
+            IWebElement element = driver.FindElement(FillInput2);
+            return element.Text;
         }
 
         public void Input1(params string[] text)

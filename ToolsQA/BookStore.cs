@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
@@ -27,6 +28,7 @@ namespace ToolsQA
         public void SearchBox()
         {
             searchValue("Pro");
+            Assert.AreEqual("Pro", searhvaluematch(), "Values are not same");
             ClickOnBook();
               
         }
@@ -53,6 +55,12 @@ namespace ToolsQA
         public void searchValue(string text)
         {
             SendKeys(FillSearchBox, text);
+        }
+        public string searhvaluematch()
+        {
+            IWebElement element = driver.FindElement(FillSearchBox);
+            string searchText = element.GetAttribute("value");
+            return searchText;
         }
         public void ClickBtn()
         {

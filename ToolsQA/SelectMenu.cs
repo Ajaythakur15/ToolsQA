@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Office.Interop.Excel;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace ToolsQA
 {
@@ -31,9 +33,9 @@ namespace ToolsQA
             obj.FillOne();
             obj.FillOldOne();
 
-            Assert.AreEqual("Group 2, option 1", obj.GetSelectedText(obj.SelectValuePath),"not matched");
-            Assert.AreEqual("Mrs.", obj.GetSelectedText(obj.SelectOnePath),"not matched");
-            Assert.AreEqual("White", obj.GetSelectedText(obj.selectOldSelectMenu),"not matched");
+            Assert.AreEqual("Group 2, option 1", obj.GetSelectedText(obj.SelectValuePath),"Value not matched");
+            Assert.AreEqual("Mrs.", obj.GetSelectedText(obj.SelectOnePath),"One not matched");
+            Assert.AreEqual("White", obj.GetSelectedText(obj.selectoldvalue),"OldOne not matched");
         }
 
     
@@ -44,6 +46,7 @@ namespace ToolsQA
             TestCasesMetods obj = new TestCasesMetods(driver);
            
             obj.FillMultiselect();
+            Assert.AreEqual("Blue,Black,Green,",obj.GetMultiselect(),"colors does not matched");
             obj.FillStandardMultiSelect();
         }
         
@@ -100,9 +103,10 @@ namespace ToolsQA
             ClickElement(selectOldSelectMenu);
             ClickElement(selectoldvalue);
         }
-         public string GetSelectedText(By path)
+         public string GetSelectedText(By Path)
          {
-            return driver.FindElement(path).GetAttribute("value");
+            IWebElement element = driver.FindElement(Path);
+            return element.Text;
          }
         public void FillMultiselect()
         { 
@@ -111,6 +115,24 @@ namespace ToolsQA
             ClickElement(ColourBlack);
             ClickElement(ColourGreen);
    
+        }
+        public string GetMultiselect()
+        {
+            IWebElement element = driver.FindElement(Multiselect);
+            IList<IWebElement> selectedOptions = new List<IWebElement>();
+            IList<IWebElement> options = element.FindElements(By.XPath(".//div[@class='css-12jo7m5']"));
+            foreach (IWebElement option in options)
+            {
+                selectedOptions.Add(option);
+            }
+            // Build a comma-separated string of the text of selected options
+            StringBuilder selectedText = new StringBuilder();
+            foreach (IWebElement option in selectedOptions)
+            {
+                selectedText.Append(option.Text).Append(",");
+            }
+            return selectedText.ToString();
+
         }
         public void FillStandardMultiSelect()
         {
