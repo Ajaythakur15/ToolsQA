@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +8,8 @@ namespace ToolsQA.BaseConstantPage
 {
     internal static class Constants
     {
-        public static readonly string BaseUrl = PropertyReader.GetPropertyValue("baseUrl");
-        public static readonly string BaseUrl2 = PropertyReader.GetPropertyValue("baseUrl2");
+        //public static readonly string BaseUrl = PropertyReader.GetPropertyValue("baseUrl");
+       // public static readonly string BaseUrl2 = PropertyReader.GetPropertyValue("baseUrl2");
+        public static readonly string BaseUrl3 = PropertyReader.GetPropertyValue("baseUrl3");
     }
 }
