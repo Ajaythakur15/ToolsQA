@@ -9,6 +9,7 @@ using ToolsQA.TestPage;
 using ToolsQA.BasePage;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.DevTools.V122.DOM;
 
 namespace ToolsQA.TestPage
 {

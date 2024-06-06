@@ -25,7 +25,8 @@ namespace ToolsQA.Pages
         public By CheckHome => By.XPath("//body/div[@id='app']/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/ol[1]/li[1]/span[1]/label[1]/span[1]/*[1]");
 
         public void ClickOnHomeArrow()
-        { 
+        {
+            ScrollDown(300);
             Click(ClickButton);
         }
         public void ClickOnDocument()
