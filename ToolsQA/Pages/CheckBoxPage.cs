@@ -1,19 +1,14 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace ToolsQA.Pages
 {
     public class CheckBoxPage : BasePage
     {
         private IWebDriver driver;
-        public CheckBoxPage (IWebDriver driver) : base(driver)
+
+        public CheckBoxPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
         }
@@ -29,60 +24,50 @@ namespace ToolsQA.Pages
             ScrollDown(300);
             Click(ClickButton);
         }
+
         public void ClickOnDocument()
         {
             Click(CheckDocument);
         }
+
         public void ClickOnDownload()
         {
             Click(CheckDownload);
         }
+
         public void ClickOnDesktop()
         {
             Click(CheckDesktop);
         }
+
         public bool isDocumentChecked()
         {
-            try
-            {
-                return driver.FindElement(CheckDocument).Selected;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            return IsCheckboxChecked(CheckDocument);
         }
+
         public bool isDownloadChecked()
         {
-            try
-            {
-                return driver.FindElement(CheckDownload).Selected;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            return IsCheckboxChecked(CheckDownload);
         }
+
         public bool isDesktopChecked()
         {
-            try
-            {
-                return driver.FindElement(CheckDesktop).Selected;
-            }
-            
-             catch (NoSuchElementException)
-            {
-                return false;
-            }
+            return IsCheckboxChecked(CheckDesktop);
         }
+
         public bool isHomecheckClicked()
+        {
+            return IsCheckboxChecked(CheckHome);
+        }
+
+        private bool IsCheckboxChecked(By locator)
         {
             try
             {
-                return driver.FindElement(CheckHome).Selected;
+                var element = driver.FindElement(locator);
+                return element.GetAttribute("class").Contains("rct-icon-check");
             }
-           
-             catch (NoSuchElementException)
+            catch (NoSuchElementException)
             {
                 return false;
             }
