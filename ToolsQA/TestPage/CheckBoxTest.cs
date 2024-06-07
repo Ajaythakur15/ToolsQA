@@ -28,14 +28,14 @@ namespace ToolsQA.TestPage
             checkbox.ClickOnDownload();
             checkbox.ClickOnDocument();
             checkbox.ClickOnDesktop();
-           
 
-            /* Assert.IsTrue(checkbox.isDownloadChecked(), "Download checkbox is left for checked");
-             Assert.IsTrue(checkbox.isDocumentChecked(),"Document checkbox is not checked");
-             Assert.IsTrue(checkbox.isDesktopChecked(),"Desktop checkbox is not checked");
-             Assert.IsTrue(checkbox.isHomecheckClicked(),"Some checkbox is left for checked");
-         */
+
+            Assert.IsFalse(checkbox.isDownloadChecked(), "Download checkbox is left for checked");
+            Assert.IsFalse(checkbox.isDocumentChecked(), "Document checkbox is not checked");
+            Assert.IsFalse(checkbox.isDesktopChecked(), "Desktop checkbox is not checked");
+            Assert.IsFalse(checkbox.isHomecheckClicked(), "Some checkbox is left for checked");
+
         }
-       
+
     }
 }

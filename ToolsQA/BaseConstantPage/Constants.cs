@@ -8,8 +8,9 @@ namespace ToolsQA.BaseConstantPage
 {
     internal static class Constants
     {
-        //public static readonly string BaseUrl = PropertyReader.GetPropertyValue("baseUrl");
-       // public static readonly string BaseUrl2 = PropertyReader.GetPropertyValue("baseUrl2");
+        public static readonly string BaseUrl = PropertyReader.GetPropertyValue("baseUrl");
+        public static readonly string BaseUrl2 = PropertyReader.GetPropertyValue("baseUrl2");
         public static readonly string BaseUrl3 = PropertyReader.GetPropertyValue("baseUrl3");
+        public static readonly string BaseUrl4 = PropertyReader.GetPropertyValue("baseUrl4");
     }
 }
