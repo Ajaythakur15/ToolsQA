@@ -65,7 +65,7 @@ namespace ToolsQA.Pages
             try
             {
                 var element = driver.FindElement(locator);
-                return element.GetAttribute("class").Contains("rct-icon-check");
+                return element.GetAttribute("class").Contains("rct-icon rct-icon-check");
             }
             catch (NoSuchElementException)
             {

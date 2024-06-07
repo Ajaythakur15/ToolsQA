@@ -14,10 +14,11 @@ namespace ToolsQA.TestPage
     public class BaseTest
     {
         protected IWebDriver Driver;
-       // private readonly string _baseUrl = Constants.BaseUrl;
-       // private readonly string _baseUrl2 = Constants.BaseUrl2;
-       //private readonly string _baseUrl3 = Constants.BaseUrl3;
-        private readonly string _baseUrl4 = Constants.BaseUrl4;
+        // private readonly string _baseUrl = Constants.BaseUrl;
+        // private readonly string _baseUrl2 = Constants.BaseUrl2;
+        //private readonly string _baseUrl3 = Constants.BaseUrl3;
+        /*private readonly string _baseUrl4 = Constants.BaseUrl4;*/
+        private readonly string _baseUrl5 = Constants.BaseUrl5;
 
         [SetUp]
         public void SetUp()
@@ -27,7 +28,8 @@ namespace ToolsQA.TestPage
             //Driver.Navigate().GoToUrl(_baseUrl);
             // Driver.Navigate().GoToUrl(_baseUrl2);
             //Driver.Navigate().GoToUrl(_baseUrl3);
-            Driver.Navigate().GoToUrl(_baseUrl4);
+            /*Driver.Navigate().GoToUrl(_baseUrl4);*/
+            Driver.Navigate().GoToUrl(_baseUrl5);
         }
 
         [TearDown]
