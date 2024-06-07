@@ -13,5 +13,6 @@ namespace ToolsQA.BaseConstantPage
         public static readonly string BaseUrl3 = PropertyReader.GetPropertyValue("baseUrl3");
         public static readonly string BaseUrl4 = PropertyReader.GetPropertyValue("baseUrl4");
         public static readonly string BaseUrl5 = PropertyReader.GetPropertyValue("baseUrl5");
+        public static readonly string BaseUrl6 = PropertyReader.GetPropertyValue("baseUrl6");
     }
 }
