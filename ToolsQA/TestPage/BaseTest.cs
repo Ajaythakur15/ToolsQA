@@ -20,7 +20,7 @@ namespace ToolsQA.TestPage
         /*private readonly string _baseUrl4 = Constants.BaseUrl4;*/
        // private readonly string _baseUrl5 = Constants.BaseUrl5;
        // private readonly string _baseUrl6 = Constants.BaseUrl6;
-        private readonly string _baseUrl7 = Constants.BaseUrl7;
+        private readonly string _baseUrl8 = Constants.BaseUrl8;
 
         [SetUp]
         public void SetUp()
@@ -33,7 +33,7 @@ namespace ToolsQA.TestPage
             /*Driver.Navigate().GoToUrl(_baseUrl4);*/
            // Driver.Navigate().GoToUrl(_baseUrl5);
            // Driver.Navigate().GoToUrl(_baseUrl6);
-            Driver.Navigate().GoToUrl(_baseUrl7);
+            Driver.Navigate().GoToUrl(_baseUrl8);
         }
 
         [TearDown]
